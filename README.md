@@ -1,4 +1,4 @@
-# The Amazing Race: AI Bat Edition 🦇
+# The Amazing Race: Riverbat Edition 🦇
 A five-level, story-driven classroom race built with plain HTML, CSS and JavaScript (no build step, no dependencies).
 
 **Play:** open the GitHub Pages link for this repo (Settings → Pages → Deploy from `main` / root).

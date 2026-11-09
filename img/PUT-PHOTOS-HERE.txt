@@ -1,0 +1,4 @@
+Optional profile pictures for the text/email notifications:
+  img/rb.jpg       -> R.B. the Riverbat (if missing, the site tries the ACC web link, then falls back to a bat emoji)
+  img/russell.jpg  -> Dr. Lowery-Hart's avatar (if missing, a purple "RL" badge is shown)
+Add the files, then make sure js/messages.js points at them.

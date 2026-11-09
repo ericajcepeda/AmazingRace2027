@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>try{if(localStorage.getItem("rb26_theme")==="light")document.documentElement.classList.add("light")}catch(e){}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Amazing Race: Riverbat Edition</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦇</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<header id="topbar">
+  <div class="bar-wrap">
+    <div class="bar-top">
+      <span>🦇 <b id="barTitle">Mission Briefing</b> · <span id="barTeam"></span></span>
+      <span><span id="barFrags">0 / 5</span> fragments &nbsp; <button class="ghost small" id="inboxBtn" title="Your texts and emails">📬<span id="inboxBadge" class="badge" hidden>0</span></button> <button class="ghost small" id="themeBtn" title="Switch light / dark">☀️ Light mode</button> <button class="ghost small" id="muteBtn" title="Sound on/off">🔔 Sound on</button></span>
+    </div>
+    <div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div>
+    <nav class="nodes" id="nodes" aria-label="Progress"></nav>
+  </div>
+</header>
+<div id="inbox" hidden aria-label="Texts and emails"></div>
+
+<main>
+
+<!-- ============ INTRO ============ -->
+<section class="panel" id="intro">
+  <div class="logobar" aria-label="ACC Student Life and School of Computer Science and Information Technology"><img class="logo-sl" src="https://sites.austincc.edu/sl/wp-content/uploads/sites/23/2014/03/SL-website-homepage-Banner-1120x143.png" alt="ACC Student Life" referrerpolicy="no-referrer" onerror="this.remove()"><span class="logosep" aria-hidden="true"></span><img class="logo-cs" src="https://sites.austincc.edu/cs/wp-content/uploads/sites/189/2026/09/ACC_CSIT_Logo_Variant_2_20260929.png" alt="ACC School of Computer Science and Information Technology" referrerpolicy="no-referrer" onerror="this.remove()"></div>
+  <div class="hero-bat">🦇</div>
+  <span class="tag">Riverbat Bat Lab · Night Shift</span>
+  <h1>The Amazing Race:<br>Riverbat Edition</h1>
+  <p class="story">Tonight, R.B. the Riverbat was supposed to fly to the next stop on the race. But an overnight update scrambled <b>ECHO</b>, the Bat Lab's navigation assistant, and ripped the flight plan into <b>five Flight Fragments</b>. Each fragment is locked inside a different system. Fix them all, collect the fragments <i>in order</i>, and the Riverbat will know where to land.</p>
+
+  <h3>How the race works</h3>
+  <ul class="rules">
+    <li>✍️ <b>Write every fragment in your Mission Log.</b> You'll need them all, in order, at the end.</li>
+    <li>🚶 After each level, a <b>Station Card</b> somewhere in this room holds the Launch Code for the next one. Go find it!</li>
+    <li>⬆️ You can scroll back up any time to see what you've already done.</li>
+    <li>📱 Watch for <b>texts and emails</b> from R.B. and ACC leadership. They may have hints! Tap 📬 at the top to re-read them.</li>
+    <li>💜 Our values keep the Riverbat flying: <b>courage, compassion, joy,</b> and <b>yes</b>.</li>
+  </ul>
+
+  <div class="row" style="margin-top:12px">
+    <label for="teamSel"><b>Our team number:</b></label>
+    <select id="teamSel"></select>
+    <button id="beginBtn" disabled>Start the flight ✦</button>
+  </div>
+  <div class="msg" id="beginMsg"></div>
+</section>
+
+<!-- ============ LEVEL 1 : CHAT ============ -->
+<section class="level" id="level1" hidden>
+  <span class="tag">Level 1 · AI · ECHO's Mind</span>
+  <h2>Wake up ECHO</h2>
+  <p class="story">ECHO is online, but its memory is only partly restored. Everything it knows about ACC got scrambled. Answer ECHO's questions to bring its memory back to 100%.</p>
+  <div class="puzzle">
+    <div class="chat">
+      <div class="chat-head"><span><span class="led"></span>ECHO · Bat Lab Navigation Assistant</span><span class="lead">memory <b id="memPct">47</b>%</span></div>
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+      <div class="choices" id="chatChoices" hidden></div>
+      <form id="chatForm" autocomplete="off">
+        <input type="text" id="chatInput" placeholder="Type your first name…" maxlength="24" aria-label="Your first name">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <div class="reward" id="reward1" hidden></div>
+</section>
+
+<!-- ============ LEVEL 2 : DATA ============ -->
+<section class="level" id="level2" hidden>
+  <span class="tag">Level 2 · The Flight Logs</span>
+  <h2>Crunch the flight logs</h2>
+  <p class="story">ECHO's flight logs are stored in Box. Every flight the Riverbats flew last month is in there, and the answers hiding in the numbers will unlock the next fragment.</p>
+  <div class="puzzle">
+    <ol class="steps">
+      <li><b>Open the logs.</b> Sign in with your ACC Gmail if Box asks.<br><a class="btn small" id="boxLink" href="#" target="_blank" rel="noopener">Open the Flight Logs in Box ↗</a><div class="boxurl">Link not opening? Copy it: <code id="boxText"></code> <button type="button" class="ghost small" id="boxCopy">Copy</button></div></li>
+      <li><b>Download your own copy.</b> Use the download button in Box. Don't change the original.</li>
+      <li><b>Open it in Excel or Google Sheets</b> (look at the <b>FlightLog</b> tab) and answer all seven questions. Numbers only, except one pick-from-the-list!</li>
+    </ol>
+    <div id="dataQs"></div>
+  </div>
+  <div class="reward" id="reward2" hidden></div>
+</section>
+
+<!-- ============ LEVEL 3 : WEB ============ -->
+<section class="level" id="level3" hidden>
+  <span class="tag">Level 3 · Front End · Mission Control</span>
+  <h2>Rebuild Mission Control</h2>
+  <p class="story"><b>Front end</b> means everything a user can see and click. Mission Control is the web page that steers the Riverbat, and it lost its layout, its structure, its style, <i>and</i> its brain. Every web page starts as a <b>wireframe</b> (a rough sketch), then is built from three layers: <b>HTML</b> (the skeleton), <b>CSS</b> (the skin), and <b>JavaScript</b> (the brain).</p>
+  <div class="puzzle">
+    <div class="stage" id="w1">
+      <h3>Stage 1 · Peel the layers</h3>
+      <p>Here's a tiny page called <b>Bat Pass</b>. Switch the layers on one at a time and watch what changes, and what code is behind it.</p>
+      <div class="switch">
+        <label class="on"><input type="checkbox" checked disabled> 1 · HTML skeleton</label>
+        <label id="lblCss"><input type="checkbox" id="swCss"> 2 · CSS skin</label>
+        <label id="lblJs"><input type="checkbox" id="swJs"> 3 · JavaScript brain</label>
+      </div>
+      <div class="split">
+        <div class="browser stick"><div class="chrome"><i></i><i></i><i></i>&nbsp;batpass.html</div><iframe id="layerFrame" title="Bat Pass demo" sandbox="allow-scripts" scrolling="no"></iframe><div class="bhint">👆 This is the live page. Switch layers on above, then click the button to try it.</div></div>
+        <div id="layerCode"></div>
+      </div>
+      <div class="q" id="wq1"><label for="wa1">How many <code>&lt;li&gt;</code> items are in the HTML code?</label><div class="row"><input type="number" id="wa1" inputmode="numeric"><button class="small" data-q="0">Check</button></div><div class="msg"></div></div>
+      <div class="q" id="wq2"><label for="wa2">Turn on <b>JavaScript</b>, then click the pink button <b>5 times</b> (turn your sound on for a chirp). What number does the counter show?</label><div class="row"><input type="number" id="wa2" inputmode="numeric"><button class="small" data-q="1">Check</button></div><div class="msg"></div></div>
+    </div>
+
+    <div class="stage locked" id="wf">
+      <h3>Stage 2 · Sketch the wireframe</h3>
+      <p>Before anyone writes code, designers draw a <b>wireframe</b>: gray boxes that show where everything goes. Here's the wireframe for Mission Control. Match each piece of HTML to the box it builds. (Drag, or tap a piece then tap a box.)</p>
+      <div class="wire" aria-label="Wireframe of the Mission Control page">
+        <div class="wb a"><b>A</b> thin strip across the very top</div>
+        <div class="wb b"><b>B</b> row of links under it</div>
+        <div class="wb c"><b>C</b> big picture</div>
+        <div class="wb d"><b>D</b> bulleted list of facts</div>
+        <div class="wb e"><b>E</b> tappable control</div>
+        <div class="wb f"><b>F</b> strip at the very bottom</div>
+      </div>
+      <div class="pool dz" id="wirePool"></div>
+      <div class="buckets" id="wireBuckets"></div>
+      <div class="row" style="margin-top:10px"><button id="wireCheck">Check wireframe</button></div><div class="msg" id="wireMsg"></div>
+    </div>
+
+    <div class="stage locked" id="w2">
+      <h3>Stage 3 · Which layer is it?</h3>
+      <p>Every piece below came from the <b>Bat Pass</b> code in Stage 1, so go back up and look if you're unsure. Drag (or tap a chip, then tap a box) each one into its layer. (Tip: the picture, the chirp sound and the button all come from different layers!)</p>
+      <div class="pool dz" id="sortPool"></div>
+      <div class="buckets" id="sortBuckets"></div>
+      <div class="row" style="margin-top:10px"><button id="sortCheck">Check layers</button></div><div class="msg" id="sortMsg"></div>
+    </div>
+
+    <div class="stage locked" id="w4">
+      <h3>Stage 4 · Debug the page</h3>
+      <p>This page should show R.B.'s picture, but the picture is missing. <b>Click the line with the typo.</b></p>
+      <div class="line-btns" id="webBug"></div>
+      <div class="msg" id="webBugMsg"></div>
+    </div>
+
+    <div class="stage locked" id="w3">
+      <h3>Stage 5 · Rebuild the skeleton</h3>
+      <p>Put the lines of the Mission Control page back in order, from the very first line to the very last. (Drag, or tap a line then tap a number.)</p>
+      <div class="pool dz" id="ordPool"></div>
+      <div class="slots" id="ordSlots"></div>
+      <div class="row" style="margin-top:10px"><button id="ordCheck">Check page</button></div><div class="msg" id="ordMsg"></div>
+      <div id="ordPreview" hidden></div>
+    </div>
+  </div>
+  <div class="reward" id="reward3" hidden></div>
+</section>
+
+<!-- ============ LEVEL 4 : PYTHON ============ -->
+<section class="level" id="level4" hidden>
+  <span class="tag">Level 4 · Back End · The Engine Room</span>
+  <h2>Fire up the engine room</h2>
+  <p class="story"><b>Back end</b> means the code running behind the scenes, where users never see it. The Riverbat's engine runs on <b>Python</b>, a language that reads almost like English. You don't need to be a programmer: every line comes with a translation, and you can always step through the code slowly. Seasoned coders, feel free to fly.</p>
+  <div class="puzzle">
+    <div class="stage" id="p1">
+      <h3>Stage 1 · Say hello to the engine</h3>
+      <p>In Python, <code>print()</code> makes the computer show words on the screen, and words go inside quotes. Type <b>one line</b> of Python that makes the engine say <b>Hello, Riverbats!</b></p>
+      <div class="editor"><div class="gutter">1</div><input type="text" id="helloIn" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="type your line of code here" aria-label="Python code"></div>
+      <div class="row" style="margin-top:10px"><button id="helloRun">▶ Run</button><button class="ghost small" id="helloHint" type="button">I need a hint</button></div>
+      <div class="msg" id="helloMsg"></div>
+      <div class="term" id="helloTerm" hidden></div>
+    </div>
+
+    <div class="stage locked" id="p2">
+      <h3>Stage 2 · Put the script in order</h3>
+      <p>This script adds up the bats in each cave. Python reads <b>top to bottom</b>, and the indented line belongs <i>inside</i> the loop. The notes after the <code>#</code> are plain-English translations.</p>
+      <div class="pool dz" id="pyPool"></div>
+      <div class="slots" id="pySlots"></div>
+      <div class="row" style="margin-top:10px"><button id="pyCheck">Check script</button><button class="ghost" id="pyRun" hidden>▶ Run it</button></div>
+      <div class="msg" id="pyMsg"></div>
+      <div class="term" id="pyTerm" hidden></div>
+    </div>
+
+    <div class="stage locked" id="p3">
+      <h3>Stage 3 · Find the bug</h3>
+      <p>This script should print the fuel left after 3 flights, but Python says <code>SyntaxError</code>. <b>Click the line with the mistake.</b></p>
+      <div class="line-btns" id="bugLines"></div>
+      <div class="msg" id="bugMsg"></div>
+    </div>
+
+    <div class="stage locked" id="p4">
+      <h3>Stage 4 · Be the computer</h3>
+      <p>Here's the fixed script. Read it like Python would. What does it print? <i>Not sure? Use the <b>Step</b> button under the code. You can click it as many times as you like.</i></p>
+      <div class="stepper" id="stepFuel"></div>
+      <div class="q" id="pq1"><label for="pa1">The script prints:</label><div class="row"><input type="number" id="pa1" inputmode="numeric"><button class="small" data-q="0">Check</button></div><div class="msg"></div></div>
+      <p style="margin-top:16px">One more. This one only counts bats whose name has exactly 4 letters.</p>
+      <div class="stepper" id="stepNames"></div>
+      <div class="q" id="pq2"><label for="pa2">The script prints:</label><div class="row"><input type="number" id="pa2" inputmode="numeric"><button class="small" data-q="1">Check</button></div><div class="msg"></div></div>
+    </div>
+  </div>
+  <div class="reward" id="reward4" hidden></div>
+</section>
+
+<!-- ============ LEVEL 5 : GAME ============ -->
+<section class="level" id="level5" hidden>
+  <span class="tag">Level 5 · Game Programming · Night Flight</span>
+  <h2>Calibration flight</h2>
+  <p class="story">One last lock. The route is sealed until the Riverbat proves it can fly it. Help <b>R.B.</b> glide through <b id="tgtTxt">27</b> gaps in the cave without crashing. R.B. has a few shields to spare, but not unlimited!</p>
+  <div class="puzzle">
+    <div class="game-wrap">
+      <canvas id="gameCanvas" width="360" height="540" aria-label="Flying game"></canvas>
+      <div class="keys"><kbd>Space</kbd> / <kbd>↑</kbd> / tap / click to flap</div>
+    </div>
+  </div>
+  <div class="reward" id="reward5" hidden></div>
+</section>
+
+<!-- ============ FINALE ============ -->
+<section class="level" id="finale" hidden>
+  <span class="tag">Final · The Flight Plan</span>
+  <h2>Rebuild the flight plan</h2>
+  <p class="story">All five systems are back online. Open your <b>Mission Log</b> and type your Flight Fragments in the order you found them. When the plan is whole, the Riverbat will show you where to land.</p>
+  <div class="puzzle" id="finalePuzzle">
+    <div class="slotrow" id="fragSlots"></div>
+    <div class="row"><button id="finalBtn">Rebuild the flight plan ✦</button></div>
+    <div class="msg" id="finalMsg"></div>
+  </div>
+  <div class="reveal" id="reveal" hidden>
+    <div id="destPhoto"></div>
+    <div class="hero-bat">🦇</div>
+    <p class="lead">Flight plan restored. R.B. is cleared for landing at…</p>
+    <div class="big" id="destName"></div>
+    <div class="addr" id="destAddr"></div>
+    <div class="judge" id="judgeBox">
+      <h3>✋ Call a judge!</h3>
+      <p id="destNote"></p>
+      <p class="stats" id="teamBadge"></p>
+      <form id="judgeForm" autocomplete="off" class="row" style="justify-content:center">
+        <input type="text" id="judgeIn" placeholder="Judge code" maxlength="30" aria-label="Judge code">
+        <button type="submit" class="small">Judge: verify</button>
+      </form>
+      <div class="msg" id="judgeMsg"></div>
+      <div class="verified" id="judgeOk" hidden>✓ Verified by judge</div>
+    </div>
+  </div>
+  </section>
+
+</main>
+<div id="toasts"></div>
+
+<button id="hubBtn" title="Facilitator hub" aria-label="Facilitator hub">⚙</button>
+<div id="hub" hidden role="dialog" aria-label="Facilitator hub">
+  <div class="hub-card">
+    <div class="row" style="justify-content:space-between"><h3 style="margin:0">⚙ Facilitator Hub</h3><button class="ghost small" id="hubClose" type="button">Close</button></div>
+    <form id="hubLogin" autocomplete="off">
+      <p class="lead">Facilitators only. Enter the hub code.</p>
+      <div class="row"><input type="password" id="hubCode" placeholder="Hub code" autocomplete="off"><button type="submit">Unlock</button></div>
+      <div class="msg" id="hubMsg"></div>
+    </form>
+    <div id="hubPanel" hidden>
+      <p class="lead" id="hubStatus"></p>
+      <div class="hub-grid">
+        <div class="row"><label for="hubLevel"><b>Jump to</b></label>
+          <select id="hubLevel"><option value="1">Level 1 · AI</option><option value="2">Level 2 · Data</option><option value="3">Level 3 · Front End</option><option value="4">Level 4 · Back End</option><option value="5">Level 5 · Game Programming</option></select>
+          <button type="button" id="hubJump" class="small">Go</button></div>
+        <button type="button" id="hubSkip">⏭ Skip current level</button>
+        <button type="button" id="hubFinal" class="ghost">🏁 Jump to the final screen (fragments)</button>
+        <button type="button" id="hubDone" class="ghost">🎉 Show the success screen</button>
+        <button type="button" id="hubReset" class="ghost">♻ Reset this team</button>
+        <button type="button" id="hubLock" class="ghost small">Lock hub</button>
+      </div>
+      <div class="msg" id="hubNote"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/util.js"></script>
+<script src="js/config.js"></script>
+<script src="js/messages.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dnd.js"></script>
+<script src="js/level1-chat.js"></script>
+<script src="js/level2-data.js"></script>
+<script src="js/level3-web.js"></script>
+<script src="js/level4-python.js"></script>
+<script src="js/level5-game.js"></script>
+<script src="js/finale.js"></script>
+<script src="js/curio.js"></script>
+<script>Race.boot();</script>
+<div id="loadError" style="display:none;position:fixed;inset:0;z-index:9999;background:#fff;color:#222;font:18px/1.5 system-ui,Arial,sans-serif;padding:28px;overflow:auto">
+  <h2 style="margin-top:0">🦇 The race didn't load all its pieces</h2>
+  <p>This page needs its <b>css</b> and <b>js</b> folders sitting right next to <code>index.html</code>.</p>
+  <ol><li>If you downloaded a .zip, <b>right-click it → Extract All</b> first. Don't open index.html from inside the zip.</li>
+  <li>Open the extracted <b>riverbat-race</b> folder. You should see <code>index.html</code>, <code>css</code>, <code>js</code>, and <code>img</code> together.</li>
+  <li>Double-click <code>index.html</code> there, or use the GitHub Pages link.</li></ol>
+  <p id="loadErrorDetail" style="font:13px ui-monospace,Consolas,monospace;color:#a00"></p>
+</div>
+<script>
+  (function () {
+    var first = "";
+    window.addEventListener("error", function (e) { if (!first) first = (e.message || "script error") + (e.filename ? " (" + e.filename.split("/").pop() + ")" : ""); });
+    window.addEventListener("load", function () {
+      var cssOk = getComputedStyle(document.documentElement).getPropertyValue("--mono").trim() !== "";
+      var jsOk = window.Race && window.RACE && window.RBU && window.RACE_MSGS && window.DnD;
+      if (!cssOk || !jsOk) { document.getElementById("loadError").style.display = "block"; document.getElementById("loadErrorDetail").textContent = "Details: " + (cssOk ? "" : "styles missing. ") + (jsOk ? "" : "scripts missing. ") + first; }
+    });
+  })();
+</script>
+</body>
+</html>
